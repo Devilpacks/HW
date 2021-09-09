@@ -38,10 +38,10 @@ alter  table test_mm
 ```
 const avg = await sql`
     insert into test_mm (ticker, close_price, exchange, timestamp) 
-    select ticker, avg(close_price), exchange, now() 
-    from public.instrument_bars 
-    where ticker = 'BTCUSD' and exchange = 'BitFinex' 
-    group  by ticker, exchange`) 
+    select ticker, avg(close_price), exchange, now() from public.instrument_bars 
+    where ticker = 'BTCUSD' and exchange = 'BitFinex' and timestamp >= date_trunc('day', now()) - interval '1 day' 
+    group by ticker, exchange, date_trunc('day', timestamp)
+    `
 ```
 * Скрипт запуска функции
 
@@ -59,3 +59,15 @@ crontab -e
 SHELL=/bin/bash
 59 23 * * * ~/App/HW/script.sh
 ```
+
+### Добавляем исторические данные
+
+* Вставляем в таблицу test_mm данные по среденей цене закрытия посуточно(в контексте исторических данных)
+```
+insert into test_mm (ticker, close_price, exchange, timestamp) 
+select ticker, avg(close_price), exchange, date_trunc('day', timestamp) 
+from public.instrument_bars 
+where ticker = 'BTCUSD' and exchange = 'BitFinex' and timestamp = date_trunc('day', timestamp) 
+group by ticker, exchange, date_trunc('day', timestamp)
+```
+ 
