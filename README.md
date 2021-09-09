@@ -18,16 +18,18 @@ select ticker, avg(close_price), exchange from public.instrument_bars where tick
 * Изменяем структуру таблицы test_mm
 ```
 alter  table test_mm
-	add column ticker varchar(30),
+	add column ticker varchar(30),  
 	add column close_price float(8),
 	add column exchange varchar(30),
 	add column timestamp timestamp;
 ```
 
 ## Задание №2
+Найдите как называются родные таблицы для этого расширения?
 * В TimescaleDB данные хранятся в chunks(множество таблиц хранящих сжатые куски данных) которые в свою очередь линкуются и перетекают в абстракцию hypertables.
 
 Поддерживается ли этим расширением конструкция ON CONFLICT ON CONSTRAINT?
+* Нет
 
 ## Задание №3
 
