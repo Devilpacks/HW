@@ -2,7 +2,7 @@ const postgres = require('postgres')
 const dotenv = require('dotenv')
 
 dotenv.config()
-const sql = postgres('postgres://test_mm:test_mm@195.154.184.221:5432/reporter')
+const sql = postgres('')
 async function average() {
     try {
         const avg = await sql`
